@@ -3,12 +3,16 @@ import {
   DashboardPageHeader,
   DashboardPageHeaderNav,
   DashboardPageHeaderTitle,
-  DashboardPageMain
-} from '@/layout/dashboard/dashboard'
-import { Button } from '@/components/ui/button'
-import { PlusIcon } from '@radix-ui/react-icons'
+  DashboardPageMain,
+} from "@/layout/dashboard/dashboard"
+import { Button } from "@/components/ui/button"
+import { PlusIcon } from "@radix-ui/react-icons"
+import { fetchNotes } from "@/requests/notes/fetchNotes"
+import ListNotes from "./list-notes"
 
 export default async function Page() {
+  const notes = await fetchNotes()
+
   return (
     <DashboardPage>
       <DashboardPageHeader>
@@ -22,7 +26,9 @@ export default async function Page() {
           </DashboardPageHeaderNav>
         </DashboardPageHeaderNav>
       </DashboardPageHeader>
-      <DashboardPageMain>Content</DashboardPageMain>
+      <DashboardPageMain>
+        <ListNotes notes={notes} />
+      </DashboardPageMain>
     </DashboardPage>
   )
 }

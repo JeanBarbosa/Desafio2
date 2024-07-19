@@ -1,19 +1,20 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { Toaster } from '@/components/ui/toaster'
-import { ThemeWrapper } from '@/contexts/themeWrapper'
-import './globals.css'
-import { SessionWrapper } from '@/contexts/sessionWrapper'
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import { Toaster } from "@/components/ui/toaster"
+import { ThemeWrapper } from "@/contexts/themeWrapper"
+import "./globals.css"
+import { SessionWrapper } from "@/contexts/sessionWrapper"
+import ReactQueryProvider from "@/contexts/notesWrapper"
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: 'Desafio 2',
-  description: 'Desafio 2'
+  title: "Desafio 2",
+  description: "Desafio 2",
 }
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
@@ -26,7 +27,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionWrapper>{children}</SessionWrapper>
+          <ReactQueryProvider>
+            <SessionWrapper>{children}</SessionWrapper>
+          </ReactQueryProvider>
         </ThemeWrapper>
         <Toaster />
       </body>
