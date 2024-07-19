@@ -1,3 +1,6 @@
+import { fetchNotes } from "@/requests/notes/fetchNotes"
+import ListNotes from "./list-notes"
+import { AddForm } from "@/components/notes/addForm"
 import {
   DashboardPage,
   DashboardPageHeader,
@@ -5,10 +8,6 @@ import {
   DashboardPageHeaderTitle,
   DashboardPageMain,
 } from "@/layout/dashboard/dashboard"
-import { Button } from "@/components/ui/button"
-import { PlusIcon } from "@radix-ui/react-icons"
-import { fetchNotes } from "@/requests/notes/fetchNotes"
-import ListNotes from "./list-notes"
 
 export default async function Page() {
   const notes = await fetchNotes()
@@ -19,10 +18,7 @@ export default async function Page() {
         <DashboardPageHeaderTitle>Tarefas</DashboardPageHeaderTitle>
         <DashboardPageHeaderNav>
           <DashboardPageHeaderNav>
-            <Button variant="outline" size="sm">
-              <PlusIcon className="mr-3 h-4 w-4" />
-              Criar tarefa
-            </Button>
+            <AddForm />
           </DashboardPageHeaderNav>
         </DashboardPageHeaderNav>
       </DashboardPageHeader>
