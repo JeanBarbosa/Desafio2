@@ -1,3 +1,8 @@
+import { Footer } from '@/components/sections/Footer'
+
 export default function Home() {
-  return <main>Landing Page 2.0</main>
+    
+  return <main>
+    <Footer />
+  </main>
 }
