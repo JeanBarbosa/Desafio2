@@ -8,17 +8,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { deleteNote } from "@/requests/notes/deleteNote"
+import { useState } from 'react'
+import { useToast } from '@/components/ui/use-toast'
 
 export function DeleteForm({ noteId }: { noteId: string }) {
+
+  const [open, setOpen] = useState(false)
+  const { toast } = useToast()
+
+
   function handleDelete() {
-    deleteNote({ noteId })
+    try {
+      deleteNote({ noteId })
+      setOpen(false)
+    } catch (error) {
+      toast({
+        title: 'Erro interno',
+        description: 'Ocorreu um erro interno, tente novamente mais tarde',
+        variant:"destructive"
+      })
+    }
+    
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
           className="absolute right-0 p-1 mt-1 text-red-400 fill-current select-none cursor-pointer hover:bg-red-200 hover:rounded-lg active:bg-red-400

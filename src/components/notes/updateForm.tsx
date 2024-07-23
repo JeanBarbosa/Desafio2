@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Note } from '@/schemas/note'
 
 const formSchema = z.object({
   title: z.string({ required_error: "Título é obrigatório" })
@@ -30,7 +31,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-export function AddForm() {
+export function UpdateForm({note}: {note:Note}) {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -38,6 +39,7 @@ export function AddForm() {
   const { register, handleSubmit, formState: { errors },
 } = useForm<FormValues>({
     reValidateMode: 'onChange',
+    defaultValues: note,
     resolver: zodResolver(formSchema)
   })
   
@@ -65,20 +67,7 @@ export function AddForm() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <PlusIcon className="mr-3 h-4 w-4" />
-          Criar tarefa
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Nova Tarefa</DialogTitle>
-          <DialogDescription>
-            Descreva a sua tarefa aqui. Clique em salvar quando estiver feito.
-          </DialogDescription>
-        </DialogHeader>
+    <>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -89,6 +78,7 @@ export function AddForm() {
             <Input
               id="title"
               placeholder="Título da tarefa"
+              defaultValue={note.title}
               maxLength={80}
               {...register("title")}
             />
@@ -106,6 +96,7 @@ export function AddForm() {
               className="col-span-3"
               placeholder="Breve descrição da tarefa"
               maxLength={500}
+              defaultValue={note.description}
               {...register("description")}
             />
           </div>
@@ -116,7 +107,6 @@ export function AddForm() {
           </Button>
         </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </>
   )
 }

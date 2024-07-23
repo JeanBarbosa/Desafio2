@@ -35,7 +35,7 @@ export default function ListNotes({ notes }: { notes: any }) {
             <div className="relative">
               {data.data.map((note: any) => (
                 <div key={note.id}>
-                  <DetailForm />
+                  <DetailForm note={note} />
                   <DeleteForm noteId={note.id} />
                   <input
                     className="hidden"
