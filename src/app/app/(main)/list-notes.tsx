@@ -1,13 +1,12 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { fetchNotes } from "@/requests/notes/fetchNotes"
 import { useQuery } from "@tanstack/react-query"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
 import { DetailForm } from "@/components/notes/detailForm"
 import { DeleteForm } from "@/components/notes/deleteForm"
 import { CheckSquareIcon } from "lucide-react"
+import { focusManager } from '@tanstack/react-query'
 
 export default function ListNotes({ notes }: { notes: any }) {
   const { data } = useQuery({
@@ -16,6 +15,22 @@ export default function ListNotes({ notes }: { notes: any }) {
     initialData: notes,
     staleTime: 5 * 1000,
   })
+
+  useEffect(() =>{
+    focusManager.setEventListener((handleFocus) => {
+      // Listen to visibilitychange
+      if (typeof window !== 'undefined' && window.addEventListener) {
+        const visibilitychangeHandler = () => {
+          handleFocus(document.visibilityState === 'visible')
+        }
+        window.addEventListener('visibilitychange', visibilitychangeHandler, false)
+        return () => {
+          // Be sure to unsubscribe if a new handler is set
+          window.removeEventListener('visibilitychange', visibilitychangeHandler)
+        }
+      }
+    })
+  }, [])
 
   return (
     <div className="flex items-center justify-center font-medium">
@@ -28,8 +43,8 @@ export default function ListNotes({ notes }: { notes: any }) {
           
 
           {data.data.length == 0 && <span className="flex items-center w-full h-8 px-2 mt-2 text-sm font-medium rounded"> 
-            Nenhuma tarefa foi adicionado ainda...
-             </span>}
+            Nenhuma tarefa foi adicionada ainda...
+            </span>}
 
           {
             <div className="relative">

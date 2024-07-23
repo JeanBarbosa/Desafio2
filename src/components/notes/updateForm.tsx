@@ -1,27 +1,20 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { PlusIcon } from "@radix-ui/react-icons"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
-import { addNote } from "@/requests/notes/addNote"
 import { useToast } from '@/components/ui/use-toast'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Note } from '@/schemas/note'
+import { updateNote } from '@/requests/notes/updateNote'
 
 const formSchema = z.object({
   title: z.string({ required_error: "Título é obrigatório" })
@@ -48,7 +41,8 @@ export function UpdateForm({note}: {note:Note}) {
 
     try {
       
-    addNote({
+    updateNote({
+      id: note.id,
       title: data.title,
       description: data.description,
     })
