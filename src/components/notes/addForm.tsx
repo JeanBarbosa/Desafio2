@@ -37,7 +37,7 @@ export function AddForm() {
   const [isLoading, setIsLoading] = useState(false)
   const queryClient = useQueryClient()
 
-  const { register, handleSubmit, formState: { errors },
+  const { reset, register, handleSubmit, formState: { errors },
 } = useForm<FormValues>({
     reValidateMode: 'onChange',
     resolver: zodResolver(formSchema)
@@ -58,7 +58,8 @@ export function AddForm() {
     })
 
     queryClient.invalidateQueries({ queryKey: ["initial-notes"] })
-
+    
+    reset()
     setOpen(false)
     } catch (error) {
       toast({
