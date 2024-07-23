@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Note } from '@/schemas/note'
 import { updateNote } from '@/requests/notes/updateNote'
+import { useQueryClient } from '@tanstack/react-query'
 
 const formSchema = z.object({
   title: z.string({ required_error: "Título é obrigatório" })
@@ -28,6 +29,7 @@ export function UpdateForm({note}: {note:Note}) {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+  const queryClient = useQueryClient()
 
   const { register, handleSubmit, formState: { errors },
 } = useForm<FormValues>({
@@ -46,6 +48,9 @@ export function UpdateForm({note}: {note:Note}) {
       title: data.title,
       description: data.description,
     })
+
+    queryClient.invalidateQueries({ queryKey: ["initial-notes"] })
+
     toast({
       title: 'Sucesso!',
       description: 'Tarefa criada com sucesso!!',

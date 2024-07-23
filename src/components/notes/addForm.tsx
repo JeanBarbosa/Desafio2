@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useQueryClient } from '@tanstack/react-query'
 
 const formSchema = z.object({
   title: z.string({ required_error: "Título é obrigatório" })
@@ -34,6 +35,7 @@ export function AddForm() {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+  const queryClient = useQueryClient()
 
   const { register, handleSubmit, formState: { errors },
 } = useForm<FormValues>({
@@ -54,6 +56,9 @@ export function AddForm() {
       title: 'Sucesso!',
       description: 'Tarefa criada com sucesso!!',
     })
+
+    queryClient.invalidateQueries({ queryKey: ["initial-notes"] })
+
     setOpen(false)
     } catch (error) {
       toast({

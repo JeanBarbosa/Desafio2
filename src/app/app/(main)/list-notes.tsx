@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query"
 import { DetailForm } from "@/components/notes/detailForm"
 import { DeleteForm } from "@/components/notes/deleteForm"
 import { CheckSquareIcon } from "lucide-react"
-import { focusManager } from '@tanstack/react-query'
 
 export default function ListNotes({ notes }: { notes: any }) {
   const { data } = useQuery({
@@ -15,22 +14,6 @@ export default function ListNotes({ notes }: { notes: any }) {
     initialData: notes,
     staleTime: 5 * 1000,
   })
-
-  useEffect(() =>{
-    focusManager.setEventListener((handleFocus) => {
-      // Listen to visibilitychange
-      if (typeof window !== 'undefined' && window.addEventListener) {
-        const visibilitychangeHandler = () => {
-          handleFocus(document.visibilityState === 'visible')
-        }
-        window.addEventListener('visibilitychange', visibilitychangeHandler, false)
-        return () => {
-          // Be sure to unsubscribe if a new handler is set
-          window.removeEventListener('visibilitychange', visibilitychangeHandler)
-        }
-      }
-    })
-  }, [])
 
   return (
     <div className="flex items-center justify-center font-medium">

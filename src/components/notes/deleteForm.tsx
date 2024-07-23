@@ -11,9 +11,11 @@ import {
 import { deleteNote } from "@/requests/notes/deleteNote"
 import { useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function DeleteForm({ noteId }: { noteId: string }) {
 
+  const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
 
@@ -21,6 +23,8 @@ export function DeleteForm({ noteId }: { noteId: string }) {
   function handleDelete() {
     try {
       deleteNote({ noteId })
+      queryClient.invalidateQueries({ queryKey: ["initial-notes"] })
+
       setOpen(false)
     } catch (error) {
       toast({
